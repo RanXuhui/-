@@ -9,3 +9,20 @@
 class CarHomePipeline(object):
     def process_item(self, item, spider):
         return item
+
+class CarHome_INFO_Pipeline(object):
+    def open_spider(self, spider):
+        self.f = open('CarHome.txt', 'w')
+
+    def close_spider(self, spider):
+        self.f.close()
+
+    def process_item(self, item, spider):
+        lis = (item['Car_Class'])
+
+        try:
+            line = str(lis) + '\n'
+            self.f.write(line)
+        except:
+            pass
+        return item
