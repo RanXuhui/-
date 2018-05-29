@@ -12,4 +12,5 @@ class CarHomeItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     Car_Class = scrapy.Field()
+    Car_Name = scrapy.Field()
 

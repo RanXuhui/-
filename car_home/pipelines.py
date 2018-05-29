@@ -4,6 +4,8 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+import json
+import codecs
 
 
 class CarHomePipeline(object):
@@ -11,18 +13,14 @@ class CarHomePipeline(object):
         return item
 
 class CarHome_INFO_Pipeline(object):
-    def open_spider(self, spider):
-        self.f = open('CarHome.txt', 'w')
+    def __init__(self):
+        self.file = codecs.open("car.json", "w", encoding='utf-8')
 
-    def close_spider(self, spider):
-        self.f.close()
 
     def process_item(self, item, spider):
-        lis = (item['Car_Class'])
-
-        try:
-            line = str(lis) + '\n'
-            self.f.write(line)
-        except:
-            pass
+        lines = json.dumps(dict(item), ensure_ascii=False) + '\n'
+        self.file.write(lines)
         return item
+
+    def close_spider(self, spider):
+        self.file.close()
