@@ -13,6 +13,6 @@ class CarHomeItem(scrapy.Item):
     # name = scrapy.Field()
     Car_Class = scrapy.Field()
     Car_Name = scrapy.Field()
-    Car_url_1 = scrapy.Field()
-    Car_url_2 = scrapy.Field()
+    Car_url = scrapy.Field()
+    # Car_url_2 = scrapy.Field()
 

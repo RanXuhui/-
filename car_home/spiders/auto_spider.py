@@ -33,13 +33,13 @@ class AutoSpiderSpider(scrapy.Spider):
             items.append(pre_item)
             for Car in Car_Name:
                 pre_item = CarHomeItem()
-                pre_item['Car_Name'] = Car.xpath('string(a)').extract()[0]
-
-                pre_item['Car_url_1'] = Car.xpath('a').re('\/\d+\/')
-                pre_item['Car_url_2'] = Car.xpath('a').re('=\d+')
-                items.append((pre_item))
+                pre_item['Car_Name'] = Car.xpath('string(a)')[0].extract()
+                Car_url_1 = Car.xpath('a').re('(?<=\/)\d+(?=\/)')      # 注意这里的Car_url_1是一个列表
+                Car_url_2 = Car.xpath('a').re('=\d+')
+                pre_item['Car_url'] = Car_url_1 if 'https:' in Car_url_1 else ('https://www.autohome.com.cn/' + Car_url_1[0] + '/#pvareaid' +Car_url_2[0])
+                items.append(pre_item)
         return items
-        # yield scrapy.Request(Car_Name_index=item['Car_Name'], meta={'item':item}, callback=self.parse_detail)
+        # yield scrapy.Request(url=item['Car_url_1'], meta={'item':item}, callback=self.parse_detail)
 
     # def pares_detail(self, response):
 
