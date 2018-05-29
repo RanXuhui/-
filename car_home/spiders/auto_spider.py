@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from car_home.items import CarHomeItem
-
+import re
 
 class AutoSpiderSpider(scrapy.Spider):
     name = 'auto_spider'
@@ -21,7 +21,9 @@ class AutoSpiderSpider(scrapy.Spider):
 
         Car_Top = Car_Calss_Web.xpath('div[@class="name"]')
 
-        Car_Name = Car_Calss_Web.xpath('div/div/ul/li/div[@class="box"]/p[@data-gcjid]')
+        Car_Name = Car_Calss_Web.xpath('div[2]/div/ul/li/div/p[@data-gcjid]')
+
+        Car_url = Car_Calss_Web.xpath('div[2]/div/div/ul/li/div/p')
 
         items = []
 
@@ -32,6 +34,13 @@ class AutoSpiderSpider(scrapy.Spider):
             for Car in Car_Name:
                 pre_item = CarHomeItem()
                 pre_item['Car_Name'] = Car.xpath('string(a)').extract()[0]
-                items.append(pre_item)
 
+                pre_item['Car_url_1'] = Car.xpath('a').re('\/\d+\/')
+                pre_item['Car_url_2'] = Car.xpath('a').re('=\d+')
+                items.append((pre_item))
         return items
+        # yield scrapy.Request(Car_Name_index=item['Car_Name'], meta={'item':item}, callback=self.parse_detail)
+
+    # def pares_detail(self, response):
+
+        # div = response.xpath('//div[@class="hotcar-content"]/div[@id="hotcar-1"]/div/div[2]/div/ul/li[1]/div/p[1]')
