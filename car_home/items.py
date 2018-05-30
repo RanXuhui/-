@@ -14,5 +14,11 @@ class CarHomeItem(scrapy.Item):
     Car_Class = scrapy.Field()
     Car_Name = scrapy.Field()
     Car_url = scrapy.Field()
-    # Car_url_2 = scrapy.Field()
-
+    New_car_guide = scrapy.Field()
+    # Mall_price = scrapy.Field()
+    # Secondhand_price = scrapy.Field()
+    Engine = scrapy.Field()
+    Speed_Changing_Box = scrapy.Field()
+    Speed_Changing_Box_2 = scrapy.Field()
+    Body_structure = scrapy.Field()
+    Car_Color = scrapy.Field()
