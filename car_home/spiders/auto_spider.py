@@ -21,13 +21,13 @@ class AutoSpiderSpider(scrapy.Spider):
         # hotcar-content → hatcar-n → list → name（车类型） → box(具体车名)
 
         Car_Calss_Web_fix = response.xpath('//div[@class="hotcar-content"]')  # 选取所有所有div元素，且这些元素拥有值为homepage-hotcar的class属性
-        Car_Hotcar = Car_Calss_Web_fix.xpath('div[1]/div[1]')                 # 对应<div class="list">
+        Car_Hotcar = Car_Calss_Web_fix.xpath('div[1]/div[1]')   # 第二个div对应              # 对应<div class="list">
 
         # 热门车之外的豪华车、小型/其他....是动态界面
         # Car_Luxury = Car_Calss_Web_fix.xpath('div[2]/div[1]')
 
         for Car_Class in Car_Hotcar:
-            Car_Name = Car_Calss_Web_fix.xpath('div[1]/div[1]/div[2]/div/ul/li/div/p[@data-gcjid]') # 具体到车的名字
+            Car_Name = Car_Calss_Web_fix.xpath('div[1]/div[1]/div[2]/div/ul/li/div/p[@data-gcjid]') # 第二个div对应    # 具体到车的名字
             for Car in Car_Name:
                 item = CarHomeItem()
                 # 车名
