@@ -17,13 +17,13 @@ class AutoSpiderSpider(scrapy.Spider):
     def parse(self, response):
 
         # hotcar-content → hatcar-n → list → name（车类型） → box(具体车名)
-        Car_Calss_Web_fix = response.xpath('//div[@class="hotcar-content"]')  # 选取所有所有div元素，且这些元素拥有值为homepage-hotcar的class属性
-        Car_Hotcar = Car_Calss_Web_fix.xpath('div[1]/div[1]')   # 第二个div对应              # 对应<div class="list">
+        Car_Calss_Web = response.xpath('//div[@class="hotcar-content"]')  # 选取所有所有div元素，且这些元素拥有值为homepage-hotcar的class属性
 
         # 热门车之外的豪华车、小型/其他....是动态界面
-        # Car_Luxury = Car_Calss_Web_fix.xpath('div[2]/div[1]')
+        # Car_Luxury = Car_Calss_Web.xpath('div[2]/div[1]')
 
-        Car_Name = Car_Calss_Web_fix.xpath('div[1]/div/div[2]/div/ul/li/div/p[@data-gcjid]') # 第二个div对应    # 具体到车的名字
+        Car_Name = Car_Calss_Web.xpath('div[1]/div/div[2]/div/ul/li/div/p[@data-gcjid]') # 第二个div对应    # 具体到车的名字
+
         i = 0
         for Car in Car_Name:
             item = CarHomeItem()
@@ -33,17 +33,17 @@ class AutoSpiderSpider(scrapy.Spider):
             if i < 25:
                 # 车的类型
                 # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
-                item['Car_Class'] = Car_Calss_Web_fix.xpath('div[1]/div[1]/div/a/text()')[0].extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
+                item['Car_Class'] = Car_Calss_Web.xpath('div[1]/div[1]/div/a/text()')[0].extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
 
             elif 24 < i < 49:
                 # 车的类型
                 # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
-                item['Car_Class'] = Car_Calss_Web_fix.xpath('div[1]/div[2]/div/a/text()')[0].extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
+                item['Car_Class'] = Car_Calss_Web.xpath('div[1]/div[2]/div/a/text()')[0].extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
 
             elif 48 < i < 75:
                 # 车的类型
                 # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
-                item['Car_Class'] = Car_Calss_Web_fix.xpath('div[1]/div[3]/div/a/text()')[0].extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
+                item['Car_Class'] = Car_Calss_Web.xpath('div[1]/div[3]/div/a/text()')[0].extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
 
             i += 1
 
