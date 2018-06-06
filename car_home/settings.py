@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'car_home.spiders'
 #USER_AGENT = 'car_home (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -65,7 +65,9 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'car_home.pipelines.CarHome_INFO_Pipeline': 2,
+   'car_home.pipelines.CarHome_INFO_Pipeline': 300,
+   'car_home.pipelines.CarHomeSQLPipeline': 300,
+
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -88,3 +90,10 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+
+# 与数据库连接相关的变量
+MYSQL_HOST = '127.0.0.1'
+MYSQL_DBNAME = 'car_home'
+MYSQL_USER = 'root'
+MYSQL_PASSWD = 'root'

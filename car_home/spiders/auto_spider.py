@@ -28,35 +28,36 @@ class AutoSpiderSpider(scrapy.Spider):
         for Car in Car_Name:
             item = CarHomeItem()
             # 车名
-            item['Car_Name'] = Car.xpath('string(a)')[0].extract()
+            item['Car_Name'] = Car.xpath('string(a)').extract()
 
             if i < 25:
                 # 车的类型
                 # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
-                item['Car_Class'] = Car_Calss_Web.xpath('div[1]/div[1]/div/a/text()')[0].extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
+                item['Car_Class'] = Car_Calss_Web.xpath('div[1]/div[1]/div[1]/a/text()').extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
 
             elif 24 < i < 49:
                 # 车的类型
                 # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
-                item['Car_Class'] = Car_Calss_Web.xpath('div[1]/div[2]/div/a/text()')[0].extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
+                item['Car_Class'] = Car_Calss_Web.xpath('div[1]/div[2]/div[1]/a/text()').extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
 
             elif 48 < i < 75:
                 # 车的类型
                 # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
-                item['Car_Class'] = Car_Calss_Web.xpath('div[1]/div[3]/div/a/text()')[0].extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
+                item['Car_Class'] = Car_Calss_Web.xpath('div[1]/div[3]/div[1]/a/text()').extract()  # item['Car_Class'] = Car_Class.xpath('div[1]/text()')[0].extract() bug
 
             i += 1
 
             Car_url_1 = Car.xpath('a').re('(?<=\/)\d+(?=\/)')      # 注意这里的Car_url_1是一个列表
             Car_url_2 = Car.xpath('a').re('=\d+')
             item['Car_url'] = Car_url_1 if 'https:' in Car_url_1 else ('https://www.autohome.com.cn/' + Car_url_1[0] + '/#pvareaid' +Car_url_2[0])
+
             yield scrapy.Request(url=item['Car_url'], meta={'item': item}, callback=self.parse_detail, dont_filter=True)
 
 
     def parse_detail(self, response):
         item = response.meta['item']
         # 新车指导价
-        item['New_car_guide'] = response.xpath('/html/body/div[2]/div[4]/div[1]/div[1]/div[1]/div[2]/dl/dt[1]/a[1]/text()')[0].extract()
+        item['New_car_guide'] = response.xpath('/html/body/div[2]/div[4]/div[1]/div[1]/div[1]/div[2]/dl/dt[1]/a[1]/text()').extract()
 
         # 下面两项车商城报价和二手车报价是js/ajax动态生成的数据使用上面的方法无法爬取
         # item['Mall_price'] = response.xpath('/html/body/div[2]/div[4]/div[1]/div[1]/div[1]/div[2]/dl/dt[2]/a[1]/text()')[0].extract()
