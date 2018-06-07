@@ -31,36 +31,35 @@ class CarHome_INFO_Pipeline(object):
 class CarHomeSQLPipeline(object):
     def __init__(self):
         # 刚开始时连接数据库
-        self.connect = pymysql.connect(host='127.0.0.1', user='root', passwd='root', db='car_home')
+        self.connect = pymysql.connect(host='127.0.0.1', user='root', passwd='root',
+                                       db='car_home', charset='utf8', use_unicode=True)
 
         # 通过cursor执行增删查改
         self.cursor = self.connect.cursor()
 
     def process_item(self, item, spider):
 
-        # 插入数据
-        for i in range(len(item["Car_Name"])):
-            Name = item["Car_Name"][i]
-            for j in range(len(item["Car_Color"][i])):
-                Color = item["Car_Color"][j]
-                self.cursor.execute("insert into info(Car_Color)VALUES ('" + Color + "')")
-            self.cursor.execute("insert into info(Car_Name)VALUES ('"+Name+"')")
+        try:
+            # 插入数据
+            self.cursor.execute(
+                """insert into info(Car_Name, Car_Class, Car_url, New_car_guide ,Car_Engine, Speed_Changing_Box, Body_structure, Car_Color)
+                value (%s, %s, %s, %s, %s, %s, %s, %s)""",
+                (item['Car_Name'],
+                 item['Car_Class'],
+                 item['Car_url'],
+                 item['New_car_guide'],
+                 item['Engine'],
+                 item['Speed_Changing_Box'],
+                 item['Body_structure'],
+                 item['Car_Color']
+            ))
 
+            # 提交sql语句
+            self.connect.commit()
 
-
-        # Class = item["Car_Class"][1]
-        # Url = item["Car_url"][1]
-        # New = item["New_car_guide"][1]
-        # Engine = item["Engine"][1]
-        # Speed = item["Speed_Changing_Box"][1]
-        # Body = item["Body_structure"][1]
-
-
-        # self.cursor.execute("insert into info(Car_Name, Car_Class, Car_url, New_car_guide,"
-        #                     " Car_Engine, Speed_Changing_Box, Body_structure, Car_Color)"
-        #                     "VALUES('"+Name+"', '"+Class+"', '"+Url+"', '"+New+"', '"+Engine+"', '"+Speed+"', '"+Body+"' ,'"+Color+"')")
-
-        # 提交sql语句
+        except Exception as error:
+            # 出现错误时打印错误日志
+            log(error)
             self.connect.commit()
         return item
 
